@@ -50,7 +50,27 @@ const factsList = document.querySelector(".facts-list");
 
 //Create DOM elements: Render facts in list
 factsList.innerHTML = "";
-createFactsList(initialFacts);
+
+loadFacts();
+
+// Load data from Supabase
+async function loadFacts() {
+  const res = await fetch(
+    "https://olizdpmruayazlirovph.supabase.co/rest/v1/facts",
+    {
+      headers: {
+        apikey:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9saXpkcG1ydWF5YXpsaXJvdnBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgwMzkwMTcsImV4cCI6MjAzMzYxNTAxN30.WWM3sG_EYZPgM7OYKjF10wYtNBEplDwz2gcV1Bdy4O8",
+        authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9saXpkcG1ydWF5YXpsaXJvdnBoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgwMzkwMTcsImV4cCI6MjAzMzYxNTAxN30.WWM3sG_EYZPgM7OYKjF10wYtNBEplDwz2gcV1Bdy4O8",
+      },
+    }
+  );
+  const data = await res.json();
+  // console.log(data);
+  // const filteredData = data.filter((fact) => fact.category === "technology");
+  createFactsList(data);
+}
 
 function createFactsList(dataArray) {
   //factsList.insertAdjacentHTML("afterbegin", "<li>Jonas</li>");
@@ -61,10 +81,12 @@ function createFactsList(dataArray) {
       ${fact.text}
       <a class="source" href="${fact.source}" target="_blank">(source)</a>
     </p>
-    <span class="tag" style="background-color: #3b82f6">${fact.category}</span>
+    <span class="tag" style="background-color: ${
+      CATEGORIES.find((cat) => cat.name === fact.category).color
+    }">${fact.category}</span>
   </li>`
   );
-  console.log(htmlArr);
+
   const html = htmlArr.join("");
   factsList.insertAdjacentHTML("afterbegin", html);
 }
@@ -78,6 +100,9 @@ btn.addEventListener("click", function () {
     btn.textContent = "Share a fact";
   }
 });
+
+console.log([7, 64, 6, -23, 11].filter((el) => el > 10));
+console.log([7, 64, 6, -23, 11].find((el) => el > 10));
 
 /*
 let votesInteresting = 23;
