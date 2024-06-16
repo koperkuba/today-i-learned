@@ -49,27 +49,38 @@ function Counter() {
 }
 
 function App() {
-  const appTitle = "Today I Learned";
+  const [showForm, setShowForm] = useState(false);
+
   return (
     <>
-      {/* HEADER  */}
-      <header className="header">
-        <div className="logo">
-          <img src="logo.png" alt="Today I learned Logo" />
-          <h1>{appTitle}</h1>
-        </div>
+      <Header showForm={showForm} setShowForm={setShowForm} />
 
-        <button className="btn btn-large btn-open">Share a fact</button>
-      </header>
-      <Counter />
-
-      <NewFactForm />
+      {showForm ? <NewFactForm /> : null}
 
       <main className="main">
         <CategoryFilter />
         <FactList />
       </main>
     </>
+  );
+}
+
+function Header({ showForm, setShowForm }) {
+  const appTitle = "Today I Learned";
+  return (
+    <header className="header">
+      <div className="logo">
+        <img src="logo.png" alt="Today I learned Logo" />
+        <h1>{appTitle}</h1>
+      </div>
+
+      <button
+        className="btn btn-large btn-open"
+        onClick={() => setShowForm((show) => !show)}
+      >
+        {showForm ? "Close" : "Share a fact"}
+      </button>
+    </header>
   );
 }
 
